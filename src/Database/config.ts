@@ -1,10 +1,11 @@
 import { Sequelize } from "sequelize";
+import { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT } from "./../environments/env";
 
 
 // Option 3: Passing parameters separately (other dialects)
-export default new Sequelize('appCRUD', 'root', '', {
-    host: 'localhost',
-    port: 3306,
+export default new Sequelize(DB_NAME!, DB_USER!, DB_PASSWORD, {
+    host: DB_HOST,
+    port: Number(DB_PORT),
     define: {
         timestamps: true
     },
