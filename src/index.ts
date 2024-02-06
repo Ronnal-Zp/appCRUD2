@@ -3,6 +3,7 @@ import cors from "cors";
 
 import sequelize from "./Database/config";
 import userRouter from "./modules/users/routes/user";
+import authRouter from "./modules/auth/routes/auth";
 
 const app = express();
 const basePath = "/api/v1"
@@ -14,6 +15,10 @@ app.use(express.json());
 main();
 
 app.use(`${basePath}`, userRouter);
+app.use(`${basePath}/auth`, authRouter);
+
+
+
 app.listen(3000, () => {
     console.log('Listen in 3000');
 })

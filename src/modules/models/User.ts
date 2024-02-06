@@ -1,5 +1,5 @@
 import { Sequelize, DataTypes, DATE } from "sequelize";
-import sequelize from "./../../../Database/config";
+import sequelize from "../../Database/config";
 // const sequelize = new Sequelize('sqlite::memory:');
 
 
