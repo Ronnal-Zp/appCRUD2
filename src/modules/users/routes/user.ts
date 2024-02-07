@@ -2,7 +2,8 @@ import express from "express";
 import { check } from "express-validator";
 import { getUsers, createUser, updateUser } from "./../controllers/user"
 import { validateFields } from "../../middlewares/validateFields";
-import { validateExistUserById } from "../../helpers/dbValidators";
+import { validateExistUserByEmail, validateExistUserById } from "../../helpers/dbValidators";
+import { validateJWT } from "../../middlewares/validateJWT";
 
 const router = express.Router();
 
@@ -19,10 +20,12 @@ router.post("/user", [
 
 
 router.put("/user/:id", [
-    check('email', 'Email invalido').isEmail(),
+    validateJWT,
+    check('email', 'Email invalido').optional().isEmail(),
+    check('email',).custom( validateExistUserByEmail ),
     check('id', 'El id es requerido.').not().isEmpty(),
     check('id').custom( validateExistUserById ),
-    check('state', 'El estado debe ser un numero').not().isNumeric(),
+    check('state', 'El estado debe ser un numero').isInt(),
     validateFields
 ], updateUser);
 

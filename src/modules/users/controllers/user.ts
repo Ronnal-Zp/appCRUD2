@@ -49,11 +49,14 @@ export const updateUser = async (req: Request, res: Response) => {
     const { email, state, firstName, lastName } = req.body;
     const { id } = req.params;
    
-    const user = await User.update({ email, state, firstName, lastName }, {
+    await User.update({ email, state, firstName, lastName }, {
         where: {
             id: id
         }
     });
+
+
+    const user = await User.findByPk( id );
 
     return res.json({
         msg: "OK",

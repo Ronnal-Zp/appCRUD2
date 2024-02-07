@@ -1,9 +1,10 @@
 import { Sequelize, DataTypes, DATE } from "sequelize";
 import sequelize from "../../Database/config";
+import { UserI } from "../interfaces/User";
 // const sequelize = new Sequelize('sqlite::memory:');
 
 
-const User = sequelize.define('User', {
+const User = sequelize.define<UserI>('User', {
   // Model attributes are defined here
   firstName: {
     type: DataTypes.STRING,
