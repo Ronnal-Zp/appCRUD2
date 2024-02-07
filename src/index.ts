@@ -5,6 +5,7 @@ import multer  from "multer";
 import sequelize from "./Database/config";
 import userRouter from "./modules/users/routes/user";
 import authRouter from "./modules/auth/routes/auth";
+import restCountriesRouter from "./modules/restcountries/routes/restcountrie";
 import { getIdUserFromToken } from "./modules/middlewares/validateJWT";
 
 
@@ -36,6 +37,7 @@ main();
 
 app.use(`${basePath}`, userRouter);
 app.use(`${basePath}/auth`, authRouter);
+app.use(`${basePath}/restcountries`, restCountriesRouter);
 
 
 
@@ -60,6 +62,6 @@ async function main() {
 }
 
 
-
+// pondra 8 mas que sea 🤥
 
 
