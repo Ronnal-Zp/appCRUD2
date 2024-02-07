@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { comparePassword, encryptPassword } from "../../users/helpers/encryptPassword";
 import { generateJWT } from "../../helpers/generateJWT";
 import User from "./../../models/User";
-import { setConfigMailer } from "../../helpers/mailer";
+import { sendMail } from "../../helpers/mailer";
 
 export const sigin = async(req: Request, res: Response) => {
     try {
@@ -41,24 +41,26 @@ export const register = async(req: Request, res: Response) => {
         const { firstName, lastName, email, password }  = req.body;
         const state = 1;
 
-        // const passwordEncrypt = encryptPassword(password);
-        // const user = await User.create({ firstName, lastName, email, state, password: passwordEncrypt });
+        const passwordEncrypt = encryptPassword(password);
+        const user = await User.create({ firstName, lastName, email, state, password: passwordEncrypt });
+
         
-        const transporter = await setConfigMailer();
+        const options = {
+            to: user.email.trim(),
+            subject: "Creacion de usuario exitosa",
+            text: `Hola ${user.firstName}, has realizado correcctamente el registro de tu usuario. \nSaludos, ` 
+        }
 
+       const result = await sendMail(options);
+        let msg = 'OK';
 
-        transporter.verify(function (error, success) {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log("Server is ready to take our messages");
-            }
-          });
+        if(!result)
+            msg = 'No se pudo enviar el correo.';
 
 
         return res.json({
             msg: 'OK',
-            data: ''
+            data: user
         });
 
     } catch (error) {
