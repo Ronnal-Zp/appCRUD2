@@ -64,3 +64,20 @@ export const updateUser = async (req: Request, res: Response) => {
     })
 
 }
+
+
+
+export const deleteUser = async (req: Request, res: Response) => {
+
+    const { id } = req.params;
+
+    await User.update({ state: 0}, {
+        where: {
+            id: id
+        }
+    });
+
+    return res.json({
+        msg: "OK",
+    })
+}

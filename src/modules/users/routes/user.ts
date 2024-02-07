@@ -1,6 +1,6 @@
 import express from "express";
 import { check } from "express-validator";
-import { getUsers, createUser, updateUser } from "./../controllers/user"
+import { getUsers, createUser, updateUser, deleteUser } from "./../controllers/user"
 import { validateFields } from "../../middlewares/validateFields";
 import { validateExistUserByEmail, validateExistUserById } from "../../helpers/dbValidators";
 import { validateJWT } from "../../middlewares/validateJWT";
@@ -28,6 +28,14 @@ router.put("/user/:id", [
     check('state', 'El estado debe ser un numero').isInt(),
     validateFields
 ], updateUser);
+
+
+router.delete("/user/:id", [
+    validateJWT,
+    check('id', 'El id es requerido.').not().isEmpty(),
+    check('id').custom( validateExistUserById ),
+    validateFields
+], deleteUser)
 
 
 export default router;
