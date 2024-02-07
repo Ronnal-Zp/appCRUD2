@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
 import { SECRETKEY_ENCRYPT } from "../../environments/env";
@@ -32,7 +32,6 @@ export const validateJWT = async (req:Request, res:Response, next:NextFunction) 
           });  
         }
 
-        
         next();
     } catch (error) {
         console.log(error);
@@ -42,4 +41,18 @@ export const validateJWT = async (req:Request, res:Response, next:NextFunction) 
         })
     }
 
+}
+
+
+export const getIdUserFromToken = async (req:Request, res = response) => {
+    const token = req.header('Authorization');
+
+    if( !token ) {
+        return res.status(401).json({
+            msg: 'Debe proporcionar el token.'
+        })
+    }
+
+    const { uid } = <JsonWebToken>jwt.verify(token, SECRETKEY_ENCRYPT!);
+    return uid;
 }

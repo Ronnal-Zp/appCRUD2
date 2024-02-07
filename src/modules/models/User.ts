@@ -28,6 +28,10 @@ const User = sequelize.define<UserI>('User', {
   state: {
     type: DataTypes.INTEGER,
     defaultValue: 1
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 }, {
   // Other model options go here

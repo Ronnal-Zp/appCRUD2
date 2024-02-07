@@ -43,6 +43,13 @@ export const createUser = async (req: Request, res: Response) => {
 
         const passwordEncrypt = encryptPassword(password);
         const user = await User.create({ firstName, lastName, email, state, password: passwordEncrypt });
+
+        await User.update({ email, state, firstName, lastName }, {
+            where: {
+                image: user.id
+            }
+        });
+
         
         return res.json({
             msg: 'OK',
