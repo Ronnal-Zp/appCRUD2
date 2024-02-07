@@ -1,16 +1,29 @@
 import { Request, Response } from "express";
 import User from "../../models/User";
 import { encryptPassword } from "../helpers/encryptPassword";
+import { QueryParams } from "../../interfaces/QueryParams";
 
 
 export const getUsers = async (req: Request, res: Response) => {
 
+    let { limit, offset } = req.query as QueryParams;
+    
+    if(!limit)
+        limit = '10';
+   
+    if(!offset)
+        offset = '0';
+
+
+
     try {
-        const users = await User.findAll();
+        const users = await User.findAll({limit: Number(limit), offset: Number(offset)});
+        const count = await User.count();
     
         return res.json({
             msg: 'OK',
-            data: users
+            data: users,
+            total: count
         })
     } catch (error) {
         return res.status(500).json({
